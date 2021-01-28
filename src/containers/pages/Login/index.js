@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { actionUserName } from '../../../config/redux/action';
 
 class Login extends Component {
     changeUser = () => {
@@ -14,12 +15,6 @@ class Login extends Component {
             </div>
         )
     }
-}
-
-const actionUserName = () => (dispatch) => {
-        setTimeout(()=> {
-            return  dispatch ({type: 'CHANGE_USER', value: 'Martin Lumbangaol'})
-        }, 2000)
 }
 
 const reduxState = (state) =>({
