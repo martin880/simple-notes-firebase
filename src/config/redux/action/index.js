@@ -1,4 +1,4 @@
-import firebase from '../../firebase';
+import firebase, {database} from '../../firebase';
 
 export const actionUserName = () => (dispatch) => {
     setTimeout(()=> {
@@ -25,18 +25,17 @@ export const registerUserAPI = (data) => (dispatch) => {
   })
 }
 
-
-
 export const loginUserAPI = (data) => (dispatch) => {
   return new Promise((resolve, reject) => {
     dispatch({type: 'CHANGE_LOADING', value: true})
         firebase.auth().signInWithEmailAndPassword(data.email, data.password)
         .then((res) => {
-          console.log('Success: ', res);
+          // console.log('Success: ', res);
           const dataUser = {
             email: res.user.email,
             uid: res.user.uid,
-            emailVerified: res.user.emailVerified
+            emailVerified: res.user.emailVerified,
+            refreshToken: res.user.refreshToken
           }
           dispatch({type: 'CHANGE_LOADING', value: false})
           dispatch({type: 'CHANGE_ISLOGIN', value: true})
@@ -51,5 +50,13 @@ export const loginUserAPI = (data) => (dispatch) => {
           dispatch({type: 'CHANGE_ISLOGIN', value: false})
           reject(false)
         })
+  })
+}
+
+export const addDataToAPI = (data) => (dispatch) => {
+  database.ref('notes/' + data.userId).push({
+    title: data.title,
+    content: data.content,
+    date: data.date
   })
 }
